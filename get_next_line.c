@@ -12,16 +12,22 @@
 
 #include "get_next_line.h"
 
-char    *read_line(int fd, char **reminder)
+
+static char *ft_alloc_and_check(size_t size)
+{
+	char *ptr;
+
+	ptr = malloc(size);
+	if (!ptr)
+		return (NULL);
+	return (ptr);
+}
+static int fill_buffer(int fd, char **reminder)
 {
 	char *buffer;
 	int bytes_read;
-	char *newline_pos;
-	char *line;
 
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);
+	buffer = ft_alloc_and_check(BUFFER_SIZE + 1);
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(*reminder, '\n'))
 	{
@@ -29,32 +35,71 @@ char    *read_line(int fd, char **reminder)
 		if (bytes_read < 0)
 		{
 			free(buffer);
-			return (NULL);
+			return (-1);
 		}
 		buffer[bytes_read] = '\0';
 		if (bytes_read > 0)
-			*reminder = ft_strjoin(*reminder, buffer);
-		if (!*reminder)
 		{
-			free(buffer);
-			return (NULL);
+			char *temp = *reminder;
+			*reminder = ft_strjoin(*reminder, buffer);
+			free(temp);
 		}
 	}
 	free(buffer);
-	newline_pos = ft_strchr(*reminder, '\n');
-	*reminder = ft_strdup(newline_pos + 1); // check if newlinepos = "ksajhas\n";
-	if(!*reminder)
-		return (NULL);
-
-char	*get_next_line(int fd)
+	return (0);
+}
+static char *extract_line(char **reminder)
 {
-	static char *reminder;
+	char *newline_pos;
 	char *line;
+	char *temp;
 
-	if(fd < 0 || BUFFER_SIZE <= 0)
+	newline_pos = ft_strchr(*reminder, '\n');
+	if (newline_pos)
+	{
+		line = ft_strndup(*reminder, newline_pos - *reminder + 1);
+		temp = *reminder;
+		*reminder = ft_strdup(newline_pos + 1);
+		free(temp);
+	}
+	else if (ft_strlen(*reminder) > 0)
+	{
+		line = ft_strdup(*reminder);
+		if (!line)
+			return (NULL);
+		temp = *reminder;
+		free(temp);
+		*reminder = NULL;
+	}
+	else
 		return (NULL);
-		line = read_line(fd, &reminder);
-	if (!line)
+	if (!line || !*reminder)
 		return (NULL);
 	return (line);
+}
+
+char *read_line(int fd, char **reminder)
+{
+	if (fill_buffer(fd, reminder) == -1)
+		return (NULL);
+	return (extract_line(reminder));
+}
+
+char *get_next_line(int fd)
+{
+    static char *reminder = NULL;
+    char *line;
+
+    if (fd < 0 || BUFFER_SIZE <= 0)
+        return (NULL);
+    if (!reminder)
+        reminder = ft_strdup("");
+    line = read_line(fd, &reminder);
+    if (!line)
+    {
+        free(reminder);
+        reminder = NULL;
+        return (NULL);
+    }
+    return (line);
 }
