@@ -13,9 +13,6 @@ int main(void)
         perror("Error opening file");
         return (1);
     }
-    dup2(fd, 2000);
-    close(fd);
-    fd = 2000;
     printf("fd: %d\n", fd);
     line = get_next_line(fd);
     int i = 0;

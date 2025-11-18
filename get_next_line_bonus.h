@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: so-ait-l <so-ait-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/15 17:27:57 by so-ait-l          #+#    #+#             */
-/*   Updated: 2025/11/18 12:31:16 by so-ait-l         ###   ########.fr       */
+/*   Created: 2025/11/18 11:57:44 by so-ait-l          #+#    #+#             */
+/*   Updated: 2025/11/18 12:33:26 by so-ait-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 42
 #endif
+
+# ifndef MAX_FD
+#  define MAX_FD 1024
+# endif
 
 char    *get_next_line(int fd);
 size_t	ft_strlen(const char *s);

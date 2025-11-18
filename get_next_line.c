@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: so-ait-l <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: so-ait-l <so-ait-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 17:27:27 by so-ait-l          #+#    #+#             */
-/*   Updated: 2025/11/15 17:27:30 by so-ait-l         ###   ########.fr       */
+/*   Updated: 2025/11/18 12:52:32 by so-ait-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ static int fill_buffer(int fd, char **reminder)
 }
 static char *extract_line(char **reminder)
 {
-	char *newline_pos;
-	char *line;
-	char *temp;
+	char (*newline_pos), (*line), (*temp);
 
 	newline_pos = ft_strchr(*reminder, '\n');
 	if (newline_pos)
@@ -73,7 +71,7 @@ static char *extract_line(char **reminder)
 	}
 	else
 		return (NULL);
-	if (!line || !*reminder)
+	if (!line)
 		return (NULL);
 	return (line);
 }
