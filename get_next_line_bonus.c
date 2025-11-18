@@ -6,7 +6,7 @@
 /*   By: so-ait-l <so-ait-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:57:36 by so-ait-l          #+#    #+#             */
-/*   Updated: 2025/11/18 12:53:01 by so-ait-l         ###   ########.fr       */
+/*   Updated: 2025/11/18 14:29:22 by so-ait-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char *read_line(int fd, char **reminder)
     return NULL;
 }
 
-	return (extract_line(reminder[fd]));
+	return (extract_line(&reminder[fd]));
 }
 
 char *get_next_line(int fd)
