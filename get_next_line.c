@@ -6,98 +6,100 @@
 /*   By: so-ait-l <so-ait-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 17:27:27 by so-ait-l          #+#    #+#             */
-/*   Updated: 2025/11/18 12:52:32 by so-ait-l         ###   ########.fr       */
+/*   Updated: 2025/11/20 13:30:47 by so-ait-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-
-static char *ft_alloc_and_check(size_t size)
+static int	free_and_return(char *ptr, int ret_value)
 {
-	char *ptr;
-
-	ptr = malloc(size);
-	if (!ptr)
-		return (NULL);
-	return (ptr);
+	if (ptr)
+		free(ptr);
+	return (ret_value);
 }
-static int fill_buffer(int fd, char **reminder)
-{
-	char *buffer;
-	int bytes_read;
 
-	buffer = ft_alloc_and_check(BUFFER_SIZE + 1);
+static int	fill_buffer(int fd, char **reminder)
+{
+	char	*buffer;
+	int		bytes_read;
+	char	*temp;
+
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (-1);
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(*reminder, '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-		{
-			free(buffer);
-			return (-1);
-		}
+			return (free_and_return(buffer, -1));
 		buffer[bytes_read] = '\0';
 		if (bytes_read > 0)
 		{
-			char *temp = *reminder;
+			temp = *reminder;
 			*reminder = ft_strjoin(*reminder, buffer);
 			free(temp);
+			if (!*reminder)
+				return (free_and_return(buffer, -1));
 		}
 	}
-	free(buffer);
-	return (0);
+	return (free_and_return(buffer, 0));
 }
-static char *extract_line(char **reminder)
-{
-	char (*newline_pos), (*line), (*temp);
 
+static char	*extract_line(char **reminder)
+{
+	char	*newline_pos;
+	char	*line;
+	char	*temp;
+
+	if (!*reminder || !**reminder)
+		return (NULL);
 	newline_pos = ft_strchr(*reminder, '\n');
 	if (newline_pos)
 	{
 		line = ft_strndup(*reminder, newline_pos - *reminder + 1);
-		temp = *reminder;
-		*reminder = ft_strdup(newline_pos + 1);
-		free(temp);
-	}
-	else if (ft_strlen(*reminder) > 0)
-	{
-		line = ft_strdup(*reminder);
 		if (!line)
 			return (NULL);
 		temp = *reminder;
+		*reminder = ft_strdup(newline_pos + 1);
 		free(temp);
-		*reminder = NULL;
+		if (!*reminder)
+			return (free(line), NULL);
 	}
 	else
-		return (NULL);
-	if (!line)
-		return (NULL);
+	{
+		line = ft_strdup(*reminder);
+		free(*reminder);
+		*reminder = NULL;
+	}
 	return (line);
 }
 
-char *read_line(int fd, char **reminder)
+char	*read_line(int fd, char **reminder)
 {
 	if (fill_buffer(fd, reminder) == -1)
 		return (NULL);
 	return (extract_line(reminder));
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-    static char *reminder = NULL;
-    char *line;
+	static char	*reminder;
+	char		*line;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return (NULL);
-    if (!reminder)
-        reminder = ft_strdup("");
-    line = read_line(fd, &reminder);
-    if (!line)
-    {
-        free(reminder);
-        reminder = NULL;
-        return (NULL);
-    }
-    return (line);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!reminder)
+		reminder = ft_strdup("");
+	if (!reminder)
+		return (NULL);
+	line = read_line(fd, &reminder);
+	if (!line)
+	{
+		free(reminder);
+		reminder = NULL;
+		return (NULL);
+	}
+	return (line);
 }
