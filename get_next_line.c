@@ -6,7 +6,7 @@
 /*   By: so-ait-l <so-ait-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 17:27:27 by so-ait-l          #+#    #+#             */
-/*   Updated: 2025/11/20 13:30:47 by so-ait-l         ###   ########.fr       */
+/*   Updated: 2025/11/21 17:02:42 by so-ait-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static int	fill_buffer(int fd, char **reminder)
 	int		bytes_read;
 	char	*temp;
 
-	buffer = malloc(BUFFER_SIZE + 1);
+	buffer = malloc((size_t)BUFFER_SIZE + 1);
 	if (!buffer)
 		return (-1);
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(*reminder, '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		bytes_read = read(fd, buffer, (size_t)BUFFER_SIZE);
 		if (bytes_read < 0)
 			return (free_and_return(buffer, -1));
 		buffer[bytes_read] = '\0';

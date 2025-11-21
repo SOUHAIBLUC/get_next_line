@@ -6,7 +6,7 @@
 /*   By: so-ait-l <so-ait-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:58:41 by so-ait-l          #+#    #+#             */
-/*   Updated: 2025/11/20 12:02:54 by so-ait-l         ###   ########.fr       */
+/*   Updated: 2025/11/21 18:03:50 by so-ait-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*ft_strchr(const char *s, int c)
 {
 	size_t	i;
 
+	if( !s)
+		return (NULL);
 	i = 0;
 	while (s[i])
 	{

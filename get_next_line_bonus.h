@@ -6,7 +6,7 @@
 /*   By: so-ait-l <so-ait-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:57:44 by so-ait-l          #+#    #+#             */
-/*   Updated: 2025/11/19 15:02:44 by so-ait-l         ###   ########.fr       */
+/*   Updated: 2025/11/21 17:31:07 by so-ait-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #  define MAX_FD 1024
 # endif
 
-char	*get_next_line(int fd);
+char	*get_next_line_bonus(int fd);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strchr(const char *s, int c);

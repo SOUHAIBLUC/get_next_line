@@ -6,12 +6,11 @@
 /*   By: so-ait-l <so-ait-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:57:36 by so-ait-l          #+#    #+#             */
-/*   Updated: 2025/11/20 13:36:56 by so-ait-l         ###   ########.fr       */
+/*   Updated: 2025/11/21 17:01:24 by so-ait-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-
 
 static int	fill_buffer(int fd, char **reminder)
 {
@@ -19,13 +18,13 @@ static int	fill_buffer(int fd, char **reminder)
 	int		bytes_read;
 	char	*temp;
 
-	buffer = malloc(BUFFER_SIZE + 1);
+	buffer = malloc((size_t)BUFFER_SIZE + 1);
 	if (!buffer)
 		return (-1);
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(*reminder, '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		bytes_read = read(fd, buffer, (size_t)BUFFER_SIZE);
 		if (bytes_read < 0)
 			return (free(buffer), -1);
 		buffer[bytes_read] = '\0';
@@ -77,7 +76,7 @@ char	*read_line(int fd, char **reminder)
 	return (extract_line(reminder));
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line_bonus(int fd)
 {
 	static char	*reminder[1024];
 	char		*line;
